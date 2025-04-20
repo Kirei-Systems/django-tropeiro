@@ -1,0 +1,7 @@
+[project]
+name = "gp0"
+version = "0.1.0"
+description = "A library intended to be used as a general configuration framework for Django projects."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = []
