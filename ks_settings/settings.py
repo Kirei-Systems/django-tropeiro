@@ -38,6 +38,7 @@ def settings(
     *,
     apps: list[str],
     jinja2: bool = False,
+    django_rest_framework = False,
     browser_reload: bool = False,
     disable_cache: bool = True,
     minify_html: bool = False,
@@ -77,6 +78,7 @@ def settings(
             enable_when(browser_reload, "django_browser_reload"),
             # enable_when(jinja2, "jinja_utils"),
             enable_when(jinja2, "django_jinja"),
+            enable_when(django_rest_framework, 'rest_framework')
         )
         + apps
     )
