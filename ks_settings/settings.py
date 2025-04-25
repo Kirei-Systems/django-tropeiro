@@ -7,18 +7,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+from collections.abc import Callable
+from typing import cast
+from dataclasses import dataclass
 import os
-from pathlib import Path
-from gpsettings import env
-
-
-def load_dotenv():
-    try:
-        import dotenv
-
-        dotenv.load_dotenv()
-    except ModuleNotFoundError:
-        pass
+from ks_settings import env
 
 
 def l(*args) -> list:
@@ -29,8 +22,24 @@ def d(val: dict) -> dict:
     return {k: v for k, v in val.items() if v is not None}
 
 
-def enable_when[T](flag: bool, val: T) -> None | T:
-    return val if flag else None
+def enable_when[T](flag: bool, val: T | Callable[[], T]) -> None | T:
+    if flag:
+        if callable(val):
+            return cast(Callable[[], T], val)()
+        else:
+            return val
+
+
+@dataclass(slots=True, kw_only=True)
+class Settings:
+    jinja2: bool
+    django_rest_framework: bool
+    browser_reload: bool
+    disable_cache: bool
+    minify_html: bool
+
+
+SETTINGS: Settings
 
 
 def settings(
@@ -38,15 +47,19 @@ def settings(
     *,
     apps: list[str],
     jinja2: bool = False,
-    django_rest_framework = False,
+    django_rest_framework: bool = False,
     browser_reload: bool = False,
     disable_cache: bool = True,
     minify_html: bool = False,
+    pre_middleware: list[str] = [],
     middleware: list[str] = [],
     login_urls: list[str] = [],
     staticfiles_dirs: list[str] = ["public"],
 ):
-    load_dotenv()
+    global SETTINGS
+    SETTINGS = Settings(
+        **{k: v for k, v in locals().items() if k in Settings.__slots__}
+    )
     PROJECT_NAME = env.project_name()
     BASE_DIR = env.project_dir()
     DEBUG = os.environ.get("PRODUCTION", "") != "true"
@@ -78,14 +91,15 @@ def settings(
             enable_when(browser_reload, "django_browser_reload"),
             # enable_when(jinja2, "jinja_utils"),
             enable_when(jinja2, "django_jinja"),
-            enable_when(django_rest_framework, 'rest_framework')
+            enable_when(django_rest_framework, "rest_framework"),
         )
         + apps
     )
 
     MIDDLEWARE = (
-        l(
-            enable_when(disable_cache, "gpsettings.middleware.DisableCacheMiddleware"),
+        pre_middleware
+        + l(
+            enable_when(disable_cache, "ks_settings.middleware.DisableCacheMiddleware"),
             "django.middleware.security.SecurityMiddleware",
             "django.middleware.locale.LocaleMiddleware",
             "django.middleware.common.CommonMiddleware",
@@ -98,7 +112,7 @@ def settings(
             "django.contrib.messages.middleware.MessageMiddleware",
             "django.middleware.clickjacking.XFrameOptionsMiddleware",
             enable_when(
-                len(login_urls) > 0, "gpsettings.middleware.LoginRequiredMiddleware"
+                len(login_urls) > 0, "ks_settings.middleware.LoginRequiredMiddleware"
             ),
         )
         + middleware
