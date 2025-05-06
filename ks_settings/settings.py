@@ -30,6 +30,15 @@ def enable_when[T](flag: bool, val: T | Callable[[], T]) -> None | T:
             return val
 
 
+def enable_list_when[T](flag: bool, val: list[T] | Callable[[], list[T]]) -> list[T]:
+    if flag:
+        if callable(val):
+            return cast(Callable[[], list[T]], val)()
+        else:
+            return val
+    return []
+
+
 @dataclass(slots=True, kw_only=True)
 class Settings:
     jinja2: bool

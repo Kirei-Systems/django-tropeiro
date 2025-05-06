@@ -1,5 +1,4 @@
-from django.conf.global_settings import DEBUG
-from ks_settings.settings import enable_when, l, SETTINGS
+from ks_settings.settings import enable_when, enable_list_when, l, SETTINGS
 from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
@@ -8,12 +7,12 @@ from django.contrib import admin
 
 
 def get_urls() -> list:
-    return l(
+    urlpatterns = l(
         enable_when(
             SETTINGS.django_rest_framework,
             lambda: path("api-auth/", include("rest_framework.urls")),
         ),
-        enable_when(
+        *enable_list_when(
             settings.DEBUG,
             lambda: static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
         ),
@@ -22,3 +21,5 @@ def get_urls() -> list:
         # If no prefix is given, use the default language
         prefix_default_language=False,
     )
+
+    return urlpatterns
