@@ -1,3 +1,4 @@
+from django.core.exceptions import ImproperlyConfigured
 from pathlib import Path
 import functools
 import os
@@ -6,7 +7,7 @@ import os
 @functools.cache
 def load_dotenv():
     try:
-        import dotenv
+        import dotenv  # type: ignore
 
         dotenv.load_dotenv()
     except ModuleNotFoundError:
@@ -19,19 +20,10 @@ def project_dir() -> Path:
 
 
 def project_name() -> str:
-    pdir = project_dir()
-    name = pdir.name
-    modpath = pdir.joinpath(name)
-    if not modpath.exists():
-        raise Exception(
-            "ks_settings expects the project root and settings module to be named the same.\n"
-            f"Please make sure {modpath} exists."
-        )
-    return name
-
-
-def set_settings_module():
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", f"{project_name()}.settings")
+    val = os.environ.get("DJANGO_SETTINGS_MODULE")
+    if val is None:
+        raise ImproperlyConfigured("Missing DJANGO_SETTINGS_MODULE env var.")
+    return val.split(".")[0].replace("_", "-")
 
 
 load_dotenv()

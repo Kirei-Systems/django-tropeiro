@@ -1,0 +1,11 @@
+from django.db import models
+from ks_settings.models import Model, AbstractUser
+from typing import TYPE_CHECKING
+
+# Create your models here.
+if TYPE_CHECKING:
+    from django.db.models.manager import RelatedManager
+
+
+class User(AbstractUser):
+    pass

@@ -3,7 +3,11 @@ name = "ks-0"
 version = "0.1.0"
 description = "A library intended to be used as a general configuration framework for Django projects."
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.14"
 dependencies = [
     "django>=5.2",
+    "django-types>=0.24.0",
+    "djangorestframework>=3.17.1",
+    "drf-spectacular[sidecar]>=0.30.0",
+    "uuid7>=0.1.0",
 ]

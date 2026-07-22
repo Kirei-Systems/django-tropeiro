@@ -1,0 +1,10 @@
+from ks_settings.settings import settings
+
+AUTH_USER_MODEL = "api.User"
+
+settings(
+    locals(),
+    apps=[
+        "api",
+    ],
+)
