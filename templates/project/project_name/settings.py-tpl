@@ -1,4 +1,4 @@
-from ks_settings.settings import settings
+from tropeiro.settings import settings
 
 AUTH_USER_MODEL = "api.User"
 

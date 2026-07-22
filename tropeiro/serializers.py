@@ -1,4 +1,4 @@
-from ks_settings.models import Model
+from tropeiro.models import Model
 from typing import cast
 from rest_framework import serializers
 

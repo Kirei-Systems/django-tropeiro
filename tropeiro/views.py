@@ -1,7 +1,7 @@
-from ks_settings.serializers import ModelSerializer
+from tropeiro.serializers import ModelSerializer
 from django.core.exceptions import ImproperlyConfigured
 import sys
-from ks_settings.models import Model, AbstractUser
+from tropeiro.models import Model, AbstractUser
 from django.db.models import Model as DjangoModel
 from rest_framework.serializers import Serializer
 from rest_framework.pagination import PageNumberPagination

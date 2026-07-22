@@ -1,4 +1,4 @@
-from ks_settings.serializers import SimpleSerializer, ModelSerializer
+from tropeiro.serializers import SimpleSerializer, ModelSerializer
 from rest_framework import serializers
 
 # Create your serializers here.

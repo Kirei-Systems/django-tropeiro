@@ -1,6 +1,6 @@
 from api.models import User
-from ks_settings.views import AbstractViewSetMixin, AbstractModelViewSet
-from ks_settings.router import Router
+from tropeiro.views import AbstractViewSetMixin, AbstractModelViewSet
+from tropeiro.router import Router
 
 router = Router()
 

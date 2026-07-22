@@ -4,7 +4,7 @@ from django.utils.translation.trans_null import _
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-from ks_settings.models import Model
+from tropeiro.models import Model
 
 
 class AbstractUserManager(BaseUserManager):

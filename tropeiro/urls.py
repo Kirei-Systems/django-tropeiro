@@ -3,7 +3,7 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
     SpectacularRedocView,
 )
-from ks_settings.settings import enable_list_when, l
+from tropeiro.settings import enable_list_when, l
 from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static

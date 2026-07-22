@@ -1,7 +1,7 @@
 from collections.abc import Callable
 from dataclasses import dataclass
 import os
-from ks_settings import env
+from tropeiro import env
 
 
 def l(*args) -> list:
@@ -79,7 +79,7 @@ def settings(
     MIDDLEWARE = (
         pre_middleware
         + l(
-            enable_when(disable_cache, "ks_settings.middleware.DisableCacheMiddleware"),
+            enable_when(disable_cache, "tropeiro.middleware.DisableCacheMiddleware"),
             "django.middleware.security.SecurityMiddleware",
             "django.middleware.locale.LocaleMiddleware",
             "django.middleware.common.CommonMiddleware",
