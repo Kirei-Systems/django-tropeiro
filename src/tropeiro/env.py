@@ -23,7 +23,7 @@ def project_name() -> str:
     val = os.environ.get("DJANGO_SETTINGS_MODULE")
     if val is None:
         raise ImproperlyConfigured("Missing DJANGO_SETTINGS_MODULE env var.")
-    return val.split(".")[0].replace("_", "-")
+    return val.split(".")[0]
 
 
 load_dotenv()

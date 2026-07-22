@@ -42,6 +42,7 @@ def settings(
 ):
 
     PROJECT_NAME = env.project_name()
+    PROJECT_SLUG = PROJECT_NAME.replace("_", "-")
     BASE_DIR = env.project_dir()
     DEBUG = os.environ.get("PRODUCTION", "") != "true"
     HOSTS = l(os.environ.get("HOST"))
@@ -55,7 +56,7 @@ def settings(
     if DEBUG:
         MEDIA_ROOT = "media/"
     else:
-        MEDIA_ROOT = f"/var/media/{PROJECT_NAME}"
+        MEDIA_ROOT = f"/var/media/{PROJECT_SLUG}"
 
     SECRET_KEY = "django-insecure-=f^dje6)gpg@y3!mt4dmji-r(@ghfz"
     if not DEBUG:
@@ -146,7 +147,7 @@ def settings(
     STATIC_URL = "static/"
     STATICFILES_DIRS = [BASE_DIR / dir for dir in staticfiles_dirs]
     if not DEBUG:
-        STATIC_ROOT = f"/var/static/{PROJECT_NAME}"
+        STATIC_ROOT = f"/var/static/{PROJECT_SLUG}"
 
     DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
