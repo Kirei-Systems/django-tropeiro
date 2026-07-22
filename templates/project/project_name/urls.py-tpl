@@ -1,5 +1,7 @@
-from {{ app_name }}.views import router
+from django.urls import path, include
+from tropeiro.urls import get_urls
 
 urlpatterns = [
-    router.include(),
+    path("", include("api.urls")),
+    *get_urls(),
 ]

@@ -1,0 +1,7 @@
+from django.core.management import BaseCommand
+from pathlib import Path
+
+
+class Command(BaseCommand):
+    def handle(self, *a, **kw):
+        """Implement your seed command here!"""

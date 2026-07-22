@@ -1,0 +1,5 @@
+from api.views import router
+
+urlpatterns = [
+    router.include(),
+]

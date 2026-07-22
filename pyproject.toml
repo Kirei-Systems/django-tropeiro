@@ -11,3 +11,6 @@ dependencies = [
     "drf-spectacular[sidecar]>=0.30.0",
     "uuid7>=0.1.0",
 ]
+
+[tool.setuptools.packages.find]
+where = ["src"]
