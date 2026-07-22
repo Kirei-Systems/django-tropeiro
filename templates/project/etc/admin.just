@@ -27,4 +27,4 @@ manage *args:
 
 
 fetch:
-  curl https://raw.githubusercontent.com/Kirei-System/django-tropeiro/master/templates/project/etc/admin.just > etc/admin.just
+  curl https://raw.githubusercontent.com/Kirei-Systems/django-tropeiro/refs/heads/main/templates/project/etc/admin.just > etc/admin.just
