@@ -1,3 +1,5 @@
+from tropeiro.serializers.schema_field import SchemaField
+from django_pydantic_field.fields import PydanticSchemaField
 from tropeiro.models import Model
 from typing import cast
 from rest_framework import serializers
@@ -44,6 +46,9 @@ class ModelSerializer(serializers.ModelSerializer):
                 cls.exclude = (
                     cast(list[str], ModelSerializer.Meta.exclude) + cls.exclude
                 )
+
+
+ModelSerializer.serializer_field_mapping[PydanticSchemaField] = SchemaField  # type: ignore
 
 
 def SimpleSerializer(
