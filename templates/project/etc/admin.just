@@ -2,9 +2,6 @@
 run:
     just manage runserver
 
-run-all:
-    tmux 
-
 redb:
     rm ./db.sqlite3
     just migrate
