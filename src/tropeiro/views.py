@@ -33,6 +33,8 @@ class AbstractViewSetMixin[U: AbstractUser](viewsets.GenericViewSet):
             super().get_serializer_class()
         except Exception as e:
             print(e, file=sys.stderr)
+        if cls := getattr(self, f"{self.action}_serializer_class", None):
+            return cls
         if self.action in ["create", "update", "partial_update"]:
             return self.write_serializer_class or super().get_serializer_class()
         else:

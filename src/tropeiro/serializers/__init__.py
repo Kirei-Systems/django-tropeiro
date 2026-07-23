@@ -37,7 +37,7 @@ class ModelSerializer(serializers.ModelSerializer):
 
         @classmethod
         def __init_subclass__(cls) -> None:
-            if hasattr(cls, "fields"):
+            if hasattr(cls, "fields") and cls.fields is not None:
                 cls.exclude = None
             if (
                 cls.exclude is not ModelSerializer.Meta.exclude
@@ -56,9 +56,15 @@ def SimpleSerializer(
     name: str | None = None,
     extra_fields: dict[str, serializers.Field] = {},
     exclude=[],
+    fields: list[str] | None = None,
 ) -> type[ModelSerializer]:
     name = name or f"{model_cls.__name__}Serializer"
     exclude_ = exclude
+    fields_ = None
+    if fields:
+        assert not exclude
+        fields_ = fields + list(extra_fields.keys())
+    print(name, fields_, exclude_)
 
     class InnerSerializer(ModelSerializer):
         locals().update(extra_fields)
@@ -66,7 +72,9 @@ def SimpleSerializer(
         class Meta(ModelSerializer.Meta):
             model = model_cls
             exclude = exclude_
+            fields = fields_
 
     InnerSerializer.__name__ = name
+    InnerSerializer.__qualname__ = f"{name}"
 
     return InnerSerializer
