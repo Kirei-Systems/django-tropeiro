@@ -5,7 +5,6 @@ from drf_spectacular.drainage import set_override
 
 class SchemaField(ModelField):
     def __init__(self, **kw):
-        print(kw)
         schema = kw["model_field"].schema
 
         set_override(self, "field", RootModel[schema])

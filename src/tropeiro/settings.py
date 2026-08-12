@@ -70,7 +70,9 @@ def settings(
             "django.contrib.sessions",
             "django.contrib.messages",
             "django.contrib.staticfiles",
+            # non-core apps
             "drf_spectacular",
+            "corsheaders",
             "drf_spectacular_sidecar",
             "rest_framework",
         )
@@ -81,6 +83,7 @@ def settings(
         pre_middleware
         + l(
             enable_when(disable_cache, "tropeiro.middleware.DisableCacheMiddleware"),
+            "corsheaders.middleware.CorsMiddleware",
             "django.middleware.security.SecurityMiddleware",
             "django.middleware.locale.LocaleMiddleware",
             "django.middleware.common.CommonMiddleware",
@@ -109,6 +112,8 @@ def settings(
         },
     )
     WSGI_APPLICATION = f"{PROJECT_NAME}.wsgi.application"
+    if DEBUG:
+        CORS_ALLOW_ALL_ORIGINS = True
 
     DATABASES = {
         "default": {

@@ -95,4 +95,4 @@ class AbstractViewSetMixin[U: AbstractUser](viewsets.GenericViewSet):
 class AbstractModelViewSet[U: AbstractUser](
     AbstractViewSetMixin[U], viewsets.ModelViewSet
 ):
-    pass
+    lookup_field: str
