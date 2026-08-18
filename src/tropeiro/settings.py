@@ -1,5 +1,4 @@
 from collections.abc import Callable
-from dataclasses import dataclass
 import os
 from tropeiro import env
 
@@ -56,7 +55,7 @@ def settings(
     if DEBUG:
         MEDIA_ROOT = "media/"
     else:
-        MEDIA_ROOT = f"/var/media/{PROJECT_SLUG}"
+        MEDIA_ROOT = os.environ.get("MEDIA_ROOT") or f"/var/media/{PROJECT_SLUG}"
 
     SECRET_KEY = "django-insecure-=f^dje6)gpg@y3!mt4dmji-r(@ghfz"
     if not DEBUG:
@@ -152,7 +151,7 @@ def settings(
     STATIC_URL = "static/"
     STATICFILES_DIRS = [BASE_DIR / dir for dir in staticfiles_dirs]
     if not DEBUG:
-        STATIC_ROOT = f"/var/static/{PROJECT_SLUG}"
+        STATIC_ROOT = os.environ.get("STATIC_ROOT") or f"/var/static/{PROJECT_SLUG}"
 
     DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
