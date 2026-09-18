@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema_field
 from rest_framework.serializers import BaseSerializer
 from types import NoneType
 from rest_framework.fields import UUIDField
@@ -102,14 +103,26 @@ def SimpleSerializer(
 
 
 class SerializerFunctionField[M: Model](serializers.Field):
-    def __init__(self, method: Callable[[M], Any], **kwargs):
+    schema: serializers.Serializer | None
+
+    def __init__(self, method: Callable[[M], Any], schema=None, **kwargs):
         self.method = method
         kwargs["source"] = "*"
         kwargs["read_only"] = True
+        self.schema = schema
+        if schema is not None:
+            extend_schema_field(schema)(self)
         super().__init__(**kwargs)
 
     def to_representation(self, value):
-        return self.method(value)
+        val = self.method(value)
+        if (schema := self.schema) is not None and isinstance(
+            schema, serializers.BaseSerializer
+        ):
+            schema.instance = val
+            val = schema.data
+            print("aaaaaaaaaaaaaaa", val)
+        return val
 
 
-__all__ = ["SerializerFunctionField", "SimpleSerializer", "ModelSerializer"]
+__all__ = ["ModelSerializer", "SerializerFunctionField", "SimpleSerializer"]
